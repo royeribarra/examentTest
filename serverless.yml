@@ -1,0 +1,32 @@
+service: starwars-api-exam
+
+useDotenv: true
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-west-1
+  environment: 
+    NODE_ENV: ${env:NODE_ENV}
+    DB_DIALECT: ${env:DB_DIALECT}
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
+    STARWARS_API_URL: ${env:STARWARS_API_URL}
+    SLS_OFFLINE_PORT: ${env:SLS_OFFLINE_PORT}
+
+functions:
+  main:
+    handler: dist/src/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
